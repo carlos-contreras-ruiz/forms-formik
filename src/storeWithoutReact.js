@@ -3,19 +3,27 @@ import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { applyMiddleware, createStore } from "redux";
-import { Provider } from "react-redux";
-import { reducer } from "./reducers/todosReducer";
-import { asyncMiddleware } from "./middlewares/asyncMiddleware";
+import { createStore } from "redux";
 
-const store = createStore(reducer, applyMiddleware(asyncMiddleware));
+const store = createStore((state = 0, action) => {
+  //es un reducer
+  //action = {type:'tipo de accion,payload:any}
+  console.log({ state, action });
+  switch (action.type) {
+    case "accion":
+      return action.payload;
+
+    default:
+      return state;
+  }
+});
+
+store.dispatch({ type: "accion", payload: 2 });
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Provider store={store}>
-        <App />
-      </Provider>
+      <App />
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
